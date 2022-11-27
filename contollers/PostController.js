@@ -119,7 +119,7 @@ export const update = async (req, res) => {
         })
     } catch (e) {
         return res.status(500).json({
-            message: 'Не удалось удалить пост',
+            message: 'Не удалось обновить пост',
         })
     }
 }

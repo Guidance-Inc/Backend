@@ -90,7 +90,85 @@ export const authMe = async (req, res) => {
         return res.json(userData);
     } catch (e) {
         return res.status(500).json({
-            message: 'Не удалось,'
+            message: 'Не удалось'
+        })
+    }
+}
+
+export const getUserById = async (req, res) => {
+    try {
+        const user = await UserModel.findById(req.params.id);
+        if (!user) {
+            res.status(404).json({
+                message: 'Пользователь с таким ID не найден',
+            })
+        }
+        const {passwordHash, ...userData} = user._doc;
+        return res.status(200).json(userData);
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json({
+            message: 'Не удалось найти пользователя',
+        })
+    }
+}
+
+export const getAllUsers = async (req, res) => {
+    try {
+        const users = await UserModel.find();
+        return res.status(200).json(users);
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json({
+            message: 'Не удалось найти пользователей',
+        })
+    }
+}
+
+export const deleteUserById = async (req, res) => {
+    try {
+        UserModel.findOneAndDelete(
+            {_id: req.params.id},
+            (err, doc) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(500).json({
+                        message: 'Не удалось удалить пользователя',
+                    });
+                }
+                if (!doc) {
+                    return res.status(404).json({
+                        message: 'Пользователь не найден',
+                    });
+                }
+                return res.json(doc);
+            }
+        );
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json({
+            message: 'Не удалось удалить пользователя',
+        })
+    }
+}
+
+export const updateUserById = async (req, res) => {
+    try {
+        const {fullName, email, avatar} = req.body;
+        await UserModel.findOneAndUpdate(
+            {_id: req.params.id},
+            {
+                fullName,
+                email,
+                avatar,
+            },
+        );
+        return res.json({
+            ok: 1,
+        })
+    } catch (e) {
+        return res.status(500).json({
+            message: 'Не удалось обновить пользователя',
         })
     }
 }

@@ -29,25 +29,34 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage});
 
-mongoose.connect(process.env.MONGO_URL)
+mongoose.connect('mongodb+srv://admin:factor13@cluster0.gqqdza1.mongodb.net/blog?retryWrites=true&w=majority')
     .then(() => console.log('DB connected'))
     .catch(() => console.log('DB error'))
 
+// Upload
 app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
     return res.json({
        url: `/uploads/${req.file.originalname}`,
     });
 });
+// Auth
 app.get('/auth/me', checkAuth, UserController.authMe)
 app.post('/auth/login', loginValidation, handleValidationErrors, UserController.login)
 app.post('/auth/register', registerValidation, handleValidationErrors, UserController.register)
 
+// Posts
 app.post('/posts', checkAuth, createPostValidation, handleValidationErrors, PostController.createPost);
 app.get('/posts', PostController.getAll);
 app.get('/tags', PostController.getLastTags);
 app.get('/posts/:id', PostController.getOne);
 app.delete('/posts/:id', checkAuth, PostController.remove);
 app.patch('/posts/:id', checkAuth, createPostValidation, handleValidationErrors, PostController.update);
+
+//Users
+app.get('/users', UserController.getAllUsers);
+app.get('/users/:id', UserController.getUserById);
+app.delete('/users/:id', checkAuth, handleValidationErrors, UserController.deleteUserById);
+app.patch('/users/:id', checkAuth, handleValidationErrors, UserController.updateUserById);
 
 app.listen(process.env.PORT || 4444, (err) => {
     if (err) return console.log(err);
