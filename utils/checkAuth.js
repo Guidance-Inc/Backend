@@ -9,7 +9,7 @@ export const checkAuth = (req, res, next) => {
         });
     }
     try {
-        const decoded = jwt.decode(token, 'secret123');
+        const decoded = jwt.decode(token, process.env.TOKEN_SECRET);
         req.userId = decoded._id;
         next();
     } catch (e) {
