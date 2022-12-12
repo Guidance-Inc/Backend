@@ -13,11 +13,6 @@ export const register = async (req, res) => {
             nickname,
             avatarUrl,
             passwordHash: hash,
-            bio: '',
-            followedBy: [],
-            following: [],
-            comments: [],
-            likes: [],
         });
 
         const user = await doc.save();

@@ -12,17 +12,21 @@ const PostSchema = new mongoose.Schema(
             default: 0,
         },
         location: {
-            type: String,
+            type: [Number],
+            default: [],
         },
         author: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
             required: true,
         },
-        likedBy: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User',
-        }],
+        likedBy: {
+            type: [{
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User',
+            }],
+            default: [],
+        },
         imageUrl: String,
         audioUrl: {
             type: String,

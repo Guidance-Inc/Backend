@@ -14,25 +14,38 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    followedBy: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-    }],
-    following: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-    }],
-    comments: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Comment',
-    }],
+    followedBy: {
+        type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        }],
+        default: [],
+    },
+    following: {
+        type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        }],
+        default: [],
+    },
+    comments: {
+        type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Comment',
+        }],
+        default: [],
+    },
     bio: {
         type: String,
+        default: '',
     },
-    likes: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Post',
-    }],
+    likes: {
+        type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Post',
+        }],
+        default: [],
+    },
     avatarUrl: String,
 }, {
     timestamps: true,

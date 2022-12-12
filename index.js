@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from "mongoose";
 import {loginValidation, registerValidation} from "./validations/auth.js";
 import {createPostValidation} from "./validations/posts.js";
+import {createCommentValidation} from "./validations/comment.js";
 import {checkAuth} from "./utils/checkAuth.js";
 import * as UserController from "./contollers/UserController.js";
 import * as PostController from "./contollers/PostController.js";
@@ -11,6 +12,9 @@ import cors from 'cors';
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
 
@@ -50,7 +54,6 @@ app.post('/auth/register', registerValidation, handleValidationErrors, UserContr
 // Posts
 app.post('/posts', checkAuth, createPostValidation, handleValidationErrors, PostController.createPost);
 app.get('/posts', PostController.getAll);
-app.get('/tags', PostController.getLastTags);
 app.get('/posts/:id', PostController.getOne);
 app.delete('/posts/:id', checkAuth, PostController.remove);
 app.patch('/posts/:id', checkAuth, createPostValidation, handleValidationErrors, PostController.update);
@@ -66,6 +69,13 @@ app.post('/comments', checkAuth, createCommentValidation, handleValidationErrors
 app.get('/comments/:id', CommentController.getCommentById);
 app.delete('/comments/:id', checkAuth, CommentController.remove);
 app.patch('/comments/:id', checkAuth, createCommentValidation, handleValidationErrors, CommentController.update);
+
+// Follow TODO
+// app.post('/follow', checkAuth, follow);
+
+// Like TODO
+// app.post('/posts', checkAuth, like());
+
 
 app.listen(process.env.PORT || 4444, (err) => {
     if (err) return console.log(err);
