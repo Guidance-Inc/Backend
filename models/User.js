@@ -14,25 +14,25 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    followedBy: {
+    followedBy: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-    },
-    following: {
+    }],
+    following: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-    },
-    comments: {
+    }],
+    comments: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Comment',
-    },
+    }],
     bio: {
         type: String,
     },
-    likes: {
+    likes: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Post',
-    },
+    }],
     avatarUrl: String,
 }, {
     timestamps: true,

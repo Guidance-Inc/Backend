@@ -19,10 +19,10 @@ const PostSchema = new mongoose.Schema(
             ref: 'User',
             required: true,
         },
-        likedBy: {
+        likedBy: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
-        },
+        }],
         imageUrl: String,
         audioUrl: {
             type: String,
