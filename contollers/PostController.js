@@ -2,32 +2,21 @@ import PostModel from "../models/Post.js";
 
 export const createPost = async (req, res) => {
     try {
-        const {title, tags, text, imageUrl} = req.body;
+        const {title, text, location, audioUrl, imageUrl} = req.body;
         const doc = new PostModel({
             title,
-            tags,
             text,
+            audioUrl,
+            location,
             imageUrl,
             author: req.userId,
+            likedBy: [],
         });
         const post = await doc.save();
         return res.json(post);
     } catch (e) {
         return res.status(500).json({
             message: 'Не удалось создать пост',
-        })
-    }
-}
-
-export const getLastTags = async (req, res) => {
-    try {
-        const posts = await PostModel.find().limit(5).exec();
-        const tags = posts.map(obj => obj.tags).flat().slice(0, 5);
-        return res.json(tags);
-    } catch (e) {
-        console.log(e);
-        return res.status(500).json({
-            message: 'Не удалось получить тэги',
         })
     }
 }
@@ -103,14 +92,14 @@ export const remove = (req, res) => {
 
 export const update = async (req, res) => {
     try {
-        const {title, text, tags, imageUrl} = req.body;
+        const {title, text, location, imageUrl} = req.body;
         await PostModel.findOneAndUpdate(
             {_id: req.params.id},
             {
                 title,
                 text,
-                tags,
                 imageUrl,
+                location,
                 author: req.userId,
             },
         );

@@ -7,12 +7,17 @@ export const register = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hash = await bcrypt.hash(req.body.password, salt);
 
-        const {email, fullName, avatarUrl} = req.body;
+        const {email, nickname, avatarUrl} = req.body;
         const doc = new UserModel({
             email,
-            fullName,
+            nickname,
             avatarUrl,
             passwordHash: hash,
+            bio: '',
+            followedBy: [],
+            following: [],
+            comments: [],
+            likes: [],
         });
 
         const user = await doc.save();
@@ -154,13 +159,14 @@ export const deleteUserById = async (req, res) => {
 
 export const updateUserById = async (req, res) => {
     try {
-        const {fullName, email, avatar} = req.body;
+        const {nickname, email, bio, avatar} = req.body;
         await UserModel.findOneAndUpdate(
             {_id: req.params.id},
             {
-                fullName,
+                nickname,
                 email,
                 avatar,
+                bio,
             },
         );
         return res.json({
