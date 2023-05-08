@@ -12,8 +12,8 @@ const PostSchema = new mongoose.Schema(
             default: 0,
         },
         location: {
-            type: [Number],
-            default: [],
+            type: String,
+            default: '',
         },
         author: {
             type: mongoose.Schema.Types.ObjectId,
